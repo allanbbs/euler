@@ -1,5 +1,3 @@
-import Distribution.Simple.Utils (xargs)
-
 multipleSum :: Int -> Int -> Int
 multipleSum currentNumber total = aux currentNumber total
     where
