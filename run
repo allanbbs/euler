@@ -1,3 +1,0 @@
-#! /bin/sh
-
-ghci $1 utils.hs
