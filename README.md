@@ -1,0 +1,3 @@
+# Project Euler Haskell
+
+Hi, I'm a software engineer that had the brilliant idea to learn Haskell because one of my main flaws is my lack of clarity when developing/thinking in a functional paradigm. Basically, I'm a lion when I'm thinking imperatively and a common mouse when I try to shift my mind to a functional landscape. I also like math, but I did not dabble in math too much after college, so I was afraid of becoming dumb. Then I decided to unify my need to master functional programming and my fear of forgetting math into this project: solve the project euler problems while learning haskell.
