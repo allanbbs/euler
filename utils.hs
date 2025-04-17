@@ -31,13 +31,15 @@ getDigits n = getDigitsAux n []
         getDigitsAux 0 digits = digits
         getDigitsAux a digits = getDigitsAux (div a 10) (mod a 10:digits)
 
-primes :: [Integer]
-primes = aux [2..]
-  where
-    aux (p:xs) = p : aux [x | x <- xs, x `mod` p /= 0]
+
 
 sieve :: Integer -> [Integer]
 sieve n = takeWhile (<= n) primes
+    where
+        primes :: [Integer]
+        primes = aux [2..]
+            where
+                aux (p:xs) = p : aux [x | x <- xs, x `mod` p /= 0]
 
 perms :: [a] -> [[a]]
 perms [] = [[]]
