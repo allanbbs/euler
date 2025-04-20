@@ -32,14 +32,13 @@ getDigits n = getDigitsAux n []
         getDigitsAux a digits = getDigitsAux (div a 10) (mod a 10:digits)
 
 
+generatePrimes :: [Integer]
+generatePrimes = aux [2..]
+    where
+        aux (p:xs) = p : aux [x | x <- xs, x `mod` p /= 0]
 
 sieve :: Integer -> [Integer]
-sieve n = takeWhile (<= n) primes
-    where
-        primes :: [Integer]
-        primes = aux [2..]
-            where
-                aux (p:xs) = p : aux [x | x <- xs, x `mod` p /= 0]
+sieve n = takeWhile (<= n) generatePrimes
 
 perms :: [a] -> [[a]]
 perms [] = [[]]
@@ -49,3 +48,10 @@ perms (x:xs) =  [pre ++ x:post | p <- perms xs, (pre,post) <- splits p]
 splits :: [a] -> [([a],[a])]
 splits [] = [([],[])]
 splits (x:xs) = ([],x:xs) : [(x:pre,post) | (pre,post) <- splits xs]
+
+
+listToDigit :: Num t => [t] -> t
+listToDigit n = listToDigitAux (reverse n) 0 0
+    where
+        listToDigitAux [] _ total = total
+        listToDigitAux (digit:digits) idx total = listToDigitAux digits (idx+1) (total + (digit*(10^idx))) 

@@ -1,4 +1,4 @@
-import EulerUtils (isPrime)
+import EulerUtils (isPrime, sieve)
 import Data.Ord (comparing)
 import Data.List (maximumBy)
 
@@ -6,7 +6,7 @@ generateQuadraticFunction :: Integer -> Integer -> (Integer -> Integer)
 generateQuadraticFunction a b x = (toInteger x)^2 + a*(toInteger x) + b
 
 possibleCoefs :: [(Integer,Integer)]
-possibleCoefs = [(a,b) | a <- [-999,-997..999], b <- [1..1000], isPrime b]
+possibleCoefs = [(a,b) | a <- [-999,-997..999], b <- sieve 1000]
 
 countConsecutivePrimes :: (Integer -> Integer) -> Integer
 countConsecutivePrimes f = go 0
