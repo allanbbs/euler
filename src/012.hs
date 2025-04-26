@@ -1,15 +1,13 @@
 import EulerUtils (reduce)
 import Data.List (find)
-triangleNumber n = sum [1..n]
+triangleNumber n = div (n*(n+1)) 2
 
 allDivisors :: Int -> [Int]
-allDivisors n = allDivisorsAux [] 1 n
-    where
-        allDivisorsAux :: [Int] -> Int -> Int-> [Int]
-        allDivisorsAux divisors factor n
-            | factor == n = factor:divisors
-            | mod n factor == 0 = allDivisorsAux (factor:divisors) (factor+1) n
-            | otherwise = allDivisorsAux divisors (factor + 1) n
+allDivisors n
+    | n < 1 = []
+    | otherwise = foldr (\d acc -> if d == n `div` d then d : acc else d : n `div` d : acc) [] divisors
+        where
+            divisors = [d | d <- [1..floor (sqrt (fromIntegral n))], n `mod` d == 0]
 
 
 
