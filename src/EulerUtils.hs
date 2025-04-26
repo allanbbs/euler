@@ -1,6 +1,9 @@
 module EulerUtils where
 import Data.List (nub,find)
 import Data.Maybe (isNothing, fromMaybe)
+import Control.Monad (forM_, when)
+import Data.Array.ST (runSTUArray, newArray, readArray, writeArray)
+import Data.Array.Unboxed (UArray, assocs)
 
 isPrime :: Integral a => a -> Bool
 isPrime 0 = False
@@ -10,6 +13,19 @@ isPrime n
     | n < 0 = False
     | even n = False
     | otherwise = null [d | d <- [3,5..floor (sqrt (fromIntegral n))], mod n d == 0]
+
+sieve :: Int -> [Int]
+sieve n = [p | (p, True) <- assocs (aux n)]
+    where
+        aux :: Int -> UArray Int Bool
+        aux n = runSTUArray $ do
+            arr <- newArray (2, n) True
+            forM_ [2 .. floor (sqrt (fromIntegral n))] $ \p -> do
+                isPrime <- readArray arr p
+                when isPrime $
+                    forM_ [p*p, p*p + p .. n] $ \m ->
+                        writeArray arr m False
+            return arr
 
 reduce :: Int ->Int -> Int
 reduce n factor
@@ -30,15 +46,6 @@ getDigits n = getDigitsAux n []
     where
         getDigitsAux 0 digits = digits
         getDigitsAux a digits = getDigitsAux (div a 10) (mod a 10:digits)
-
-
-generatePrimes :: [Integer]
-generatePrimes = aux [2..]
-    where
-        aux (p:xs) = p : aux [x | x <- xs, x `mod` p /= 0]
-
-sieve :: Integer -> [Integer]
-sieve n = takeWhile (<= n) generatePrimes
 
 perms :: [a] -> [[a]]
 perms [] = [[]]
