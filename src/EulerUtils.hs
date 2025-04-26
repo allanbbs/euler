@@ -38,9 +38,14 @@ isUniqueList x = isUniqueListAux x []
         isUniqueListAux (x:xs) elements = notElem x elements && isUniqueListAux xs (x:elements)
 
 fact :: Integral a => a -> Integer
-fact n
-    | n <=1 = 1
-    | otherwise = toInteger n * fact (n-1)
+fact n = aux n 1
+    where
+        aux :: Integral a  => a -> Integer -> Integer
+        aux k total
+            | k <=1 = total
+            | otherwise = 
+                let x = toInteger k
+                in aux (x-1) (total*x)
 
 getDigits n = getDigitsAux n []
     where
