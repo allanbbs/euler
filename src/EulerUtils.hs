@@ -27,6 +27,24 @@ sieve n = [p | (p, True) <- assocs (aux n)]
                         writeArray arr m False
             return arr
 
+phiSieve :: Int -> [(Int,Int)]
+phiSieve n = [(a,phi) | (a, phi) <- assocs (aux n)]
+    where
+        aux :: Int -> UArray Int Int
+        aux n = runSTUArray $ do
+            arr <- newArray (1, n) 1
+            forM_ [2 .. n] $ \i -> do
+                writeArray arr i i
+            forM_ [2..n]  $ \p -> do
+                let prime = isPrime p
+                when prime $ do
+                    writeArray arr p (p-1)
+                    forM_ [2*p,3*p .. n] $ \m -> do
+                        let k = div m p
+                        phiK <- readArray arr k
+                        if (mod k p == 0) then writeArray arr m (phiK*(p)) else writeArray arr m (phiK*(p-1))
+            return arr
+
 reduce :: Int ->Int -> Int
 reduce n factor
     | mod n factor == 0 = reduce (div n factor) factor
